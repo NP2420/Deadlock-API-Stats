@@ -18,12 +18,11 @@ def main():
     initialize_heroes()
     initialize_ranks()
 
-    find_info()
+    if find_info() != 0:
+        sort_matches(PLAYER_TOTAL)
+        sort_matches(PLAYER_RECENT)
 
-    sort_matches(PLAYER_TOTAL)
-    sort_matches(PLAYER_RECENT)
-
-    print_info()
+        print_info()
 
 #Gathers information regarding deadlock's character name assets
 def initialize_heroes():
@@ -56,7 +55,7 @@ def find_info():
 
         if ID == "0":
             print("Goodbye!")
-            return
+            return 0
         
         hero_response = requests.get("https://analytics.deadlock-api.com/v2/players/" + ID + "/hero-stats")
         if (hero_response.status_code == 200):
@@ -89,7 +88,7 @@ def find_info():
             global PLAYER_RANK
             PLAYER_RANK = round((rank_total / match_count) * 100) / 100
 
-            break
+            return 1
 
         print("Invalid ID")
 
