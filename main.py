@@ -90,9 +90,7 @@ def find_info():
             global PLAYER_AVG_RANK
             # global PLAYER_PEAK_RANK
             PLAYER_AVG_RANK = r2d(((rank_total) / match_count))
-
-            
-            PLAYER_AVG_RANK += (PLAYER_AVG_RANK - (sum(RANKS.keys()) / len(RANKS))) / 10 * 2
+            PLAYER_AVG_RANK += (PLAYER_AVG_RANK - 10 * (sum(RANKS.keys()) / len(RANKS))) / 10 * 5
 
             return 1
 
