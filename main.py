@@ -1,4 +1,5 @@
 import requests
+import math
 
 # Nathan Pham
 # 2/25/2025
@@ -12,7 +13,7 @@ RANKS = {}
 #Specified player information
 PLAYER_TOTAL = []
 PLAYER_RECENT = []
-PLAYER_RANK = ""
+PLAYER_AVG_RANK = 0
 
 def main():
     initialize_heroes()
@@ -72,9 +73,10 @@ def find_info():
             match_count = 0
             rank_total = 0
 
+
             for match in matches:
                 match_count += 1
-                rank_total += match["average_match_badge"]
+                rank_total += (match["average_match_badge"])
 
                 if match["hero_id"] not in temp_dict:
                     temp_dict[match["hero_id"]] = {"id": match["hero_id"], "matches": 1, "wins": match["match_result"]}
@@ -85,8 +87,12 @@ def find_info():
             for index in temp_dict:
                 PLAYER_RECENT.append(temp_dict[index])
             
-            global PLAYER_RANK
-            PLAYER_RANK = round((rank_total / match_count) * 100) / 100
+            global PLAYER_AVG_RANK
+            # global PLAYER_PEAK_RANK
+            PLAYER_AVG_RANK = r2d(((rank_total) / match_count))
+
+            
+            PLAYER_AVG_RANK += (PLAYER_AVG_RANK - (sum(RANKS.keys()) / len(RANKS))) / 10 * 2
 
             return 1
 
@@ -103,7 +109,11 @@ def print_info():
 
         print()
 
-    print("Estimated Rank: ", PLAYER_RANK, " ", RANKS[round(PLAYER_RANK / 10)])
+    rank = math.floor((PLAYER_AVG_RANK) / 10)
+    if rank > len(RANKS):
+        print("Estimated Rank: ", PLAYER_AVG_RANK, " Eternus+")
+    else:
+        print("Estimated Rank: ", PLAYER_AVG_RANK, " ", RANKS[rank])
 
     print()
     print("Press Enter to See Recent Stats")
